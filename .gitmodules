@@ -1,0 +1,9 @@
+[submodule "AuthApi"]
+	path = AuthApi
+	url = https://github.com/ilyatokar/AuthApi.git
+[submodule "StatusApi"]
+	path = StatusApi
+	url = https://github.com/SpotlessRadiance/ToDoSecondServer.git
+[submodule "TodoApi"]
+	path = TodoApi
+	url = https://github.com/ilyatokar/TodoListApi.git
