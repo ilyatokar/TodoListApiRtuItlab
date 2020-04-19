@@ -6,189 +6,8 @@
 	},
 	"item": [
 		{
-			"name": "AuthApi",
+			"name": "AuthApi(для ручного тестирования)",
 			"item": [
-				{
-					"name": "Delete user id",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Authorization_global}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/auth/{{id}}",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"{{id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit user id",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Authorization_global}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/auth/{{id}}",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"{{id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create user",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Authorization_global}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"login\": \"test@test\",\n\t\"password\": \"yplst2435\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/api/auth/",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get user id",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Authorization_global}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/auth/{{id_user_info}}",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"{{id_user_info}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get all users(admin)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Authorization_global}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/auth",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"auth"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get user info",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Authorization_global}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/auth",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"auth"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Get token",
 					"event": [
@@ -208,9 +27,9 @@
 								"id": "e895c4e5-d3d0-43b0-a032-f713f7c95d09",
 								"exec": [
 									"pm.test(\"Status is ok, response is json\", function () {\r",
-									"    if(pm.response.to.be.ok == \"200\"){\r",
-									"        pm.environment.set(\"Authorization\", postman.getResponseHeader(\"Authorization\"));\r",
-									"    } // проверка статуса\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var json = JSON.parse(responseBody);\r",
+									"    pm.globals.set(\"Authorization_global\", json.access_token);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -240,16 +59,100 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/auth/token",
+							"raw": "{{url_global}}/api/auth/token",
 							"host": [
-								"{{url}}"
+								"{{url_global}}"
 							],
 							"path": [
 								"api",
 								"auth",
 								"token"
 							]
+						},
+						"description": "В теле необходимо указать логин и пароль пользователя. Возвращает JWT-токен, который необходимо прикреплять к запросам к остальным сервисам"
+					},
+					"response": []
+				},
+				{
+					"name": "create user Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Authorization_global}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"login\": \"test@test\",\n\t\"password\": \"yplst2435\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_global}}/api/auth/",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								""
+							]
+						},
+						"description": "Добавляет пользователя с указанными в теле данными"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8859fb4d-4b9e-4bf1-ab6d-b927f8cdcb09",
+								"exec": [
+									"pm.test(\"Status is ok, get info\", function () {\r",
+									"    if(pm.response.to.be.ok == \"200\");// проверка статуса\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Authorization_global}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/api/auth/getlogin",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"getlogin"
+							]
+						},
+						"description": "Получить данные о пользователе в формате JSON"
 					},
 					"response": []
 				}
@@ -289,7 +192,7 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "TodolListApi",
+			"name": "TodolListApi(для ручного тестирования)",
 			"item": [
 				{
 					"name": "added task",
@@ -316,9 +219,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/todo",
+							"raw": "{{url_global}}/api/todo",
 							"host": [
-								"{{url}}"
+								"{{url_global}}"
 							],
 							"path": [
 								"api",
@@ -344,12 +247,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/",
+							"raw": "{{url_global}}/{{id}}",
 							"host": [
-								"{{url}}"
+								"{{url_global}}"
 							],
 							"path": [
-								""
+								"{{id}}"
 							]
 						}
 					},
@@ -371,12 +274,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/",
+							"raw": "{{url_global}}/api/todo/{{id}}",
 							"host": [
-								"{{url}}"
+								"{{url_global}}"
 							],
 							"path": [
-								""
+								"api",
+								"todo",
+								"{{id}}"
 							]
 						}
 					},
@@ -398,9 +303,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/todo",
+							"raw": "{{url_global}}/api/todo",
 							"host": [
-								"{{url}}"
+								"{{url_global}}"
 							],
 							"path": [
 								"api",
@@ -435,9 +340,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/todo",
+							"raw": "{{url_global}}/api/todo",
 							"host": [
-								"{{url}}"
+								"{{url_global}}"
 							],
 							"path": [
 								"api",
@@ -472,25 +377,66 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/todo/13",
+							"raw": "{{url_global}}/api/todo/{{id}}",
 							"host": [
-								"{{url}}"
+								"{{url_global}}"
 							],
 							"path": [
 								"api",
 								"todo",
-								"13"
+								"{{id}}"
 							]
 						}
 					},
 					"response": []
 				}
 			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5f708b33-05d5-40a5-92a3-63451e2d0a4f",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1afbde3e-06fe-44eb-b9d6-8d200b7c065e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "TodoStatusApi",
+			"name": "TodoStatusApi(для ручного тестирования)",
 			"item": [
+				{
+					"name": "Get all task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/api/todostatus",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"todostatus"
+							]
+						},
+						"description": "Возвращает все задания пользователя"
+					},
+					"response": []
+				},
 				{
 					"name": "Get status info id",
 					"request": {
@@ -504,7 +450,7 @@
 					"response": []
 				},
 				{
-					"name": "get history id",
+					"name": "Get history id",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -519,9 +465,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/todostatus//history/{{id}}",
+							"raw": "{{url_global}}/api/todostatus//history/{{id}}",
 							"host": [
-								"{{url}}"
+								"{{url_global}}"
 							],
 							"path": [
 								"api",
@@ -536,45 +482,42 @@
 					"response": []
 				},
 				{
-					"name": "3",
+					"name": "Get return complite",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
-						}
+							"raw": "{{url_global}}/api/todostatus/completed/{{id}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"todostatus",
+								"completed",
+								"{{id}}"
+							]
+						},
+						"description": "Возвращает, было ли выполнено задание с данным id"
 					},
 					"response": []
 				},
 				{
-					"name": "4",
+					"name": "Set status id",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": ""
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "5",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": ""
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "6",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": ""
+							"raw": "{{url_global}}/api/todostatus/new/{{taskId}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"todostatus",
+								"new",
+								"{{taskId}}"
+							]
 						}
 					},
 					"response": []
@@ -611,6 +554,527 @@
 							"path": [
 								"api",
 								"todostatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete status id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/api/todostatus/{{id}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"todostatus",
+								"{{id}}"
+							]
+						},
+						"description": "Удаляет статус и историю изменений задания"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6afc795f-b9c6-4d91-b3b4-04b6f1bad770",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "acaa8814-e983-409f-8a70-fe1662e91b54",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "test auth",
+			"item": [
+				{
+					"name": "create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "513f8a8e-42a0-40fd-bbed-5e501af5da9d",
+								"exec": [
+									"pm.test(\"Status is ok, response is json\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var json = JSON.parse(responseBody);\r",
+									"    pm.globals.set(\"id_user\", json.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Authorization_global}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"login\": \"test@test\",\n\t\"password\": \"qwerty2435\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_global}}/api/auth/",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								""
+							]
+						},
+						"description": "Добавляет пользователя с указанными в теле данными"
+					},
+					"response": []
+				},
+				{
+					"name": "Get token Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "71eb7cb7-2160-47e8-840f-bee7cc94b901",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e895c4e5-d3d0-43b0-a032-f713f7c95d09",
+								"exec": [
+									"pm.test(\"Status is ok, response is json\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var json = JSON.parse(responseBody);\r",
+									"    pm.globals.set(\"Authorization_global\", json.access_token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"login\": \"test@test\",\n\t\"password\": \"qwerty2435\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_global}}/api/auth/token",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"token"
+							]
+						},
+						"description": "В теле необходимо указать логин и пароль пользователя. Возвращает JWT-токен, который необходимо прикреплять к запросам к остальным сервисам"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user info Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8859fb4d-4b9e-4bf1-ab6d-b927f8cdcb09",
+								"exec": [
+									"pm.test(\"Status is ok, get info\", function () {\r",
+									"    if(pm.response.to.be.ok == \"200\");// проверка статуса\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Authorization_global}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/api/auth/getlogin",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"getlogin"
+							]
+						},
+						"description": "Получить данные о пользователе в формате JSON"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "test task",
+			"item": [
+				{
+					"name": "Get token Copy Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "71eb7cb7-2160-47e8-840f-bee7cc94b901",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e895c4e5-d3d0-43b0-a032-f713f7c95d09",
+								"exec": [
+									"pm.test(\"Status is ok, response is json\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var json = JSON.parse(responseBody);\r",
+									"    pm.globals.set(\"Authorization_global\", json.access_token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Authorization_global}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"login\": \"itokar98@mail.ru\",\n\t\"password\": \"yplst2435\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_global}}/api/auth/token",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"token"
+							]
+						},
+						"description": "В теле необходимо указать логин и пароль пользователя. Возвращает JWT-токен, который необходимо прикреплять к запросам к остальным сервисам"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user info Copy Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8859fb4d-4b9e-4bf1-ab6d-b927f8cdcb09",
+								"exec": [
+									"pm.test(\"Status is ok, get info\", function () {\r",
+									"    if(pm.response.to.be.ok == \"200\");// проверка статуса\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Authorization_global}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/api/auth/getlogin",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"getlogin"
+							]
+						},
+						"description": "Получить данные о пользователе в формате JSON"
+					},
+					"response": []
+				},
+				{
+					"name": "Create task 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get item 1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiaXRva2FyOThAbWFpbC5ydSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwibmJmIjoxNTg3MjM0NTI1LCJleHAiOjE1ODcyMzUxMjUsImlzcyI6Ik15QXV0aFNlcnZlciIsImF1ZCI6Ik15QXV0aENsaWVudCJ9.KSxYQ_L0AycKJU0VtmwjyCNzqVfW9VMmQkm6N9RUtm",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/api/todo/{{id}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"todo",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit item 1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiaXRva2FyM0BtYWlsLnJ1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoidXNlciIsIm5iZiI6MTU4NzIyMjg2MywiZXhwIjoxNTg3MjIzNDYzLCJpc3MiOiJNeUF1dGhTZXJ2ZXIiLCJhdWQiOiJNeUF1dGhDbGllbnQifQ.PeSATwxJn1mVI8U8jVthjuf0Ogttt0vz-cdh-aWFnag",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Title\":\"hello 44\",\n\t\"Body\":\"hello 44\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_global}}/api/todo/{{id}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"todo",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get history 1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Authorization_global}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/api/todostatus//history/{{id}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"todostatus",
+								"",
+								"history",
+								"{{id}}"
+							]
+						},
+						"description": "Возвращает историю изменения статуса задания с данным id"
+					},
+					"response": []
+				},
+				{
+					"name": "Put Change status  1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiaXRva2FyM0BtYWlsLnJ1IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoidXNlciIsIm5iZiI6MTU4NzIyNjAwMywiZXhwIjoxNTg3MjI2NjAzLCJpc3MiOiJNeUF1dGhTZXJ2ZXIiLCJhdWQiOiJNeUF1dGhDbGllbnQifQ.45IH8cgRvU-dy9IsfrG9ndNNdRdbE-tZcGvVJG8JPLE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 4,\n\t\"IsCompleted\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/todostatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"todostatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete status id Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/api/todostatus/{{id}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"api",
+								"todostatus",
+								"{{id}}"
+							]
+						},
+						"description": "Удаляет статус и историю изменений задания"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete item Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiaXRva2FyOThAbWFpbC5ydSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwibmJmIjoxNTg3MjM0NTI1LCJleHAiOjE1ODcyMzUxMjUsImlzcyI6Ik15QXV0aFNlcnZlciIsImF1ZCI6Ik15QXV0aENsaWVudCJ9.KSxYQ_L0AycKJU0VtmwjyCNzqVfW9VMmQkm6N9RUtm",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_global}}/{{id}}",
+							"host": [
+								"{{url_global}}"
+							],
+							"path": [
+								"{{id}}"
 							]
 						}
 					},
