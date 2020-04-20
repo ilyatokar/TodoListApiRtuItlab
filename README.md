@@ -4,6 +4,11 @@
 
 Демо Api расположено по адресу: http://80.93.177.181/
 
+![Иллюстрация к проекту](https://github.com/ilyatokar/TodoListApiRtuItlab/blob/master/img/rest_api.png)
+
+![Иллюстрация к проекту](https://github.com/ilyatokar/TodoListApiRtuItlab/blob/master/img/db.png)
+
+
 Приложение для работы с To-Do состоит из следующих микросервисов:
 
   - Сервис регистрации авторизации [AuthApi](https://github.com/ilyatokar/AuthApi) 
